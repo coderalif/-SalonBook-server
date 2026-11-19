@@ -60,7 +60,11 @@ router.post('/create-checkout-session', verifyCustomer, async (req, res) => {
             });
         }
 
-        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+        // ক্লায়েন্ট ডোমেইন শনাক্তকরণ (যাতে Vercel লাইভ সাইট বা লোকালহোস্ট যেখানেই থাকুক ঠিকভাবে রিডাইরেক্ট হয়)
+        const originHeader = req.headers.origin || (req.headers.referer ? (() => {
+            try { return new URL(req.headers.referer).origin; } catch (e) { return null; }
+        })() : null);
+        const clientUrl = originHeader || process.env.CLIENT_URL || 'https://salon-book-omega.vercel.app';
         const hasValidStripeKey = process.env.STRIPE_SECRET_KEY &&
             !process.env.STRIPE_SECRET_KEY.includes('placeholder') &&
             !process.env.STRIPE_SECRET_KEY.includes('your_stripe') &&
