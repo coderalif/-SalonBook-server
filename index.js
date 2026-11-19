@@ -1,3 +1,4 @@
+const { aiShield } = require('@samimcodes/ai-shield');
 // ========================================================
 // SalonBook Server - Main Entry Point
 // ========================================================
@@ -18,6 +19,9 @@ const userRoutes = require('./routes/userRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
+// 🛡️ Protected by AI-Shield (Automatic Setup)
+app.use(aiShield({ enableDashboard: true }));
+
 const PORT = process.env.PORT || 5000;
 
 // ১. ডাটাবেজে কানেক্ট করা এবং ডিফল্ট ডাটা সিড করা
