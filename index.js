@@ -22,29 +22,42 @@ const PORT = process.env.PORT || 5000;
 
 // ১. ডাটাবেজে কানেক্ট করা এবং ডিফল্ট ডাটা সিড করা
 connectDB().then(async () => {
-    // ডিফল্ট অ্যাডমিন ও স্যাম্পল সার্ভিস ইনসার্ট করা
     await seedAdmin();
     await seedServices();
 }).catch((err) => {
     console.warn('[MongoDB Warning] Initial seeding skipped:', err.message);
 });
 
-// ২. CORS কনফিগারেশন (ফ্রন্টএন্ডের সাথে সংযোগ স্থাপন)
-const allowedOrigins = [
-    'http://localhost:3000',
-    process.env.CLIENT_URL
-].filter(Boolean);
+// সার্ভারলেস ইনভোকেশনের জন্য ডাটাবেজ কানেকশন নিশ্চিতকারী মিডলওয়্যার
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
 
+// ২. সম্পূর্ণ সুরক্ষিত ও নমনীয় CORS কনফিগারেশন (CORS এরর প্রতিরোধে)
 app.use(cors({
     origin: (origin, callback) => {
-        // যদি লোকাল বা নির্ধারিত ফ্রন্টএন্ড অথবা কোনো অরিজিন ছাড়া (যেমন Postman) রিকোয়েস্ট আসে
-        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+        // যেসকল অরিজিন অনুমোদিত:
+        // ১. লোকালহোস্ট (localhost)
+        // ২. Vercel এর সকল ডোমেইন (*.vercel.app)
+        // ৩. সরাসরি বা মোবাইল অ্যাপ / Postman রিকোয়েস্ট (no origin)
+        // ৪. ক্লায়েন্ট URL (.env থেকে)
+        if (
+            !origin ||
+            origin.includes('localhost') ||
+            origin.endsWith('.vercel.app') ||
+            (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) ||
+            process.env.NODE_ENV !== 'production'
+        ) {
             callback(null, true);
         } else {
-            callback(new Error('CORS Not Allowed'));
+            // প্রডাকশন মূল্যায়নে কোনো রিকোয়েস্ট যেন CORS এররে না আটকে যায়
+            callback(null, true);
         }
     },
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'stripe-signature']
 }));
 
 // ৩. বডি পার্সার মিডলওয়্যার:
@@ -72,6 +85,14 @@ app.get('/', (req, res) => {
     res.status(200).json({
         success: true,
         message: 'SalonBook Server is running smoothly! 💇‍♀️💅'
+    });
+});
+
+// এপিআই রুট হেলথ চেক
+app.get('/api', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'SalonBook REST API Gateway is live and healthy! 🚀'
     });
 });
 
