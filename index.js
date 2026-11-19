@@ -97,3 +97,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`[SalonBook Server] Server running on port: http://localhost:${PORT}`);
 });
+
+module.exports = app;
