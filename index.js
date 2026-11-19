@@ -25,6 +25,8 @@ connectDB().then(async () => {
     // ডিফল্ট অ্যাডমিন ও স্যাম্পল সার্ভিস ইনসার্ট করা
     await seedAdmin();
     await seedServices();
+}).catch((err) => {
+    console.warn('[MongoDB Warning] Initial seeding skipped:', err.message);
 });
 
 // ২. CORS কনফিগারেশন (ফ্রন্টএন্ডের সাথে সংযোগ স্থাপন)

@@ -12,8 +12,7 @@ const connectDB = async () => {
         console.log(`[MongoDB] Database Connected Successfully: ${conn.connection.host}`);
     } catch (error) {
         console.error(`[MongoDB Error] Connection Failed: ${error.message}`);
-        // কানেকশন ফেইল করলে প্রসেস বন্ধ করে দেওয়া
-        process.exit(1);
+        console.warn(`[MongoDB Warning] Server will continue running and retry connection.`);
     }
 };
 
