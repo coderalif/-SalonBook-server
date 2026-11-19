@@ -6,6 +6,7 @@ SalonBook is an online salon appointment booking system backend built with Node.
 
 ## 🔗 Project Links
 
+- **Live Website:** [https://salon-book-omega.vercel.app](https://salon-book-omega.vercel.app)
 - **Client Repository:** [https://github.com/coderalif/-SalonBook](https://github.com/coderalif/-SalonBook)
 - **Server Repository:** [https://github.com/coderalif/-SalonBook-server](https://github.com/coderalif/-SalonBook-server)
 
