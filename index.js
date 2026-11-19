@@ -28,9 +28,20 @@ connectDB().then(async () => {
     console.warn('[MongoDB Warning] Initial seeding skipped:', err.message);
 });
 
-// সার্ভারলেস ইনভোকেশনের জন্য ডাটাবেজ কানেকশন নিশ্চিতকারী মিডলওয়্যার
+let isSeeded = false;
+
+// সার্ভারলেস ইনভোকেশনের জন্য ডাটাবেজ কানেকশন ও সিডিং নিশ্চিতকারী মিডলওয়্যার
 app.use(async (req, res, next) => {
-    await connectDB();
+    try {
+        await connectDB();
+        if (!isSeeded) {
+            await seedAdmin();
+            await seedServices();
+            isSeeded = true;
+        }
+    } catch (err) {
+        console.error('[Middleware Init Error]:', err.message);
+    }
     next();
 });
 
