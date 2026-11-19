@@ -4,6 +4,14 @@
 // ==========================================
 
 const mongoose = require('mongoose');
+const dns = require('dns');
+
+// Windows ও স্থানীয় নেটওয়ার্কে MongoDB Atlas SRV DNS সমাধান
+try {
+    dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+} catch (e) {
+    // যেসব পরিবেশে setServers সীমাবদ্ধ সেখানে ডিফল্ট চলবে
+}
 
 let isConnected = false;
 
