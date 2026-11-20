@@ -47,7 +47,7 @@ const initialServices = [
         description: 'High-definition waterproof makeover with luxury lashes, customized contouring, and long-lasting setting finish.',
         price: 95,
         duration: 60,
-        image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800',
+        image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800',
         status: 'active'
     },
     {
@@ -60,12 +60,12 @@ const initialServices = [
         status: 'active'
     },
     {
-        serviceName: 'Swedish Relaxing Full Body Massage',
+        serviceName: 'Aromatherapy Botanical Spa & Relaxation',
         category: 'Spa & Massage',
-        description: 'Gentle, therapeutic muscle relaxation using warm organic essential oils to alleviate tension and stress.',
-        price: 80,
+        description: 'Soothing organic aromatherapy session using warm botanical oils, volcanic basalt hot stones, and calming lavender therapy for complete tension relief.',
+        price: 75,
         duration: 60,
-        image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800',
+        image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800',
         status: 'active'
     },
     {
